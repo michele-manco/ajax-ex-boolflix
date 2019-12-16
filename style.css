@@ -1,0 +1,18 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif;
+}
+header{
+  height: 80px;
+  background-color: #dee5ed;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+}
+#sfilter{
+
+  margin-right: 20px;
+}
