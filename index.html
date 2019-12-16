@@ -15,12 +15,27 @@
   <header>
     <div class="searchbar">
       <input id="sfilter" class="searchbar-input" placeholder="Type the name of a movie " name="search">
-      <label class="slabel" for="search">
+      <button class="slabel" for="search">
         <i class="fa fa-search" aria-hidden="true"></i>
-      </label>
+      </button>
 
     </div>
   </header>
+  <main>
+    <div class="movieswrapper">
+
+    </div>
+  </main>
+  <script id="movies-template" type="text/x-handlebars-template">
+    <div class="movies">
+      <ul>
+        <li>{{titolo}}</li>
+        <li>{{titolo_originale}}</li>
+        <li>{{lingua}}</li>
+        <li>{{voto}}</li>
+      </ul>
+    </div>
+  </script>
 
 </body>
 </html>
