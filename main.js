@@ -20,7 +20,7 @@ if (searchy.length != 0) {
     'url': api_url_base + '/search/movie',
     'data':{
       'api_key':'1c2382ce77d5c3384075b987fc84ac1a',
-      'query': 'star wars'
+      'query': searchy
     },
     'method': 'GET',
     'success': function(data) {
@@ -31,7 +31,7 @@ if (searchy.length != 0) {
           var titolo_originale = searched_movie.original_title;
           var lingua = searched_movie.original_language;
           var voto = searched_movie.vote_average;
-          console.log(searched_movie);
+
           var source = {
           titolo: titolo,
           titolo_originale: titolo_originale,
@@ -43,7 +43,7 @@ if (searchy.length != 0) {
 
       }
       var html   = template(source);
-      $('.movieswrapper').append(html);
+      $('#movi').append(html);
 
 
     },
@@ -53,7 +53,7 @@ if (searchy.length != 0) {
     }
   });
 }
-$('sfilter').val('');
+$('#sfilter').val('');
 }
 
 });

@@ -12,7 +12,32 @@ header{
   justify-content: flex-end;
 
 }
+main {
+    height: calc(100% - 80px);;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: #1d2d3b;
+}
 #sfilter{
 
   margin-right: 20px;
+}
+.movieswrapper{
+  width: 60%;
+  min-height: calc( 100vh - 60px) ;
+  margin:  auto;
+  display: flex;
+  flex-flow: wrap;
+  justify-content:space-evenly;
+  margin-top: 40px;
+}
+.movies {
+  height: 300px;
+  width: 200px;;
+  background-color: #dee5ed;
+  margin-bottom: 40px;
+  padding: 25px;
+}
 }
