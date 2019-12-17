@@ -1,5 +1,7 @@
   var api_url_base = 'https://api.themoviedb.org/3';
 $(document).ready(function(){
+  var source = $("#movies-template").html();
+  var template = Handlebars.compile(source);
 $('.slabel').click(function(){
 
   userSearch();
@@ -12,8 +14,7 @@ $(document).on('keypress', '.searchbar-input', function(){
    });
 function userSearch(){
 $('.movies').remove();
-var source = $("#movies-template").html();
-var template = Handlebars.compile(source);
+
 var searchy = $('#sfilter').val();
 if (searchy.length != 0) {
   $.ajax({
@@ -32,18 +33,19 @@ if (searchy.length != 0) {
           var lingua = searched_movie.original_language;
           var voto = searched_movie.vote_average;
 
-          var source = {
+          var temp = {
           titolo: titolo,
           titolo_originale: titolo_originale,
           lingua : lingua,
           voto: voto
 
           };
-
+          console.log(source);
+          var html   = template(temp );
+          $('#movi').append(html);
 
       }
-      var html   = template(source);
-      $('#movi').append(html);
+
 
 
     },
