@@ -6,6 +6,7 @@ $(document).ready(function() {
   var source = $("#movies-template").html();
   var template = Handlebars.compile(source);
   var searchy = $('#sfilter').val();
+  var flagg = ['en', 'it', 'de', 'fr', 'ru'];
 
   $('.slabel').click(function() {
 
@@ -47,6 +48,7 @@ $(document).ready(function() {
                 success: function(data) {
 
                     if(data.total_results > 0) {
+                      var film = data.results;
                         PrintOn(data, root);
                     } else {
                         alert('No query found');
@@ -57,7 +59,27 @@ $(document).ready(function() {
                 }
             });
 
+            $.ajax({
+                        url: api_url_base + '/search/tv',
+                        'data': {
+                            'api_key': api_key,
+                            'query': searchy,
+                            'language': 'it-IT'
+                        },
+                        method: 'GET',
+                        success: function(data) {
 
+                            if(data.total_results > 0) {
+                              var serie = data.results;
+                                PrintOn(data, root);
+                            } else {
+                                alert('No query found');
+                            }
+                        },
+                        error: function() {
+                            alert('Error')
+                        }
+                    });
 
   }
 
@@ -66,6 +88,7 @@ $(document).ready(function() {
 
   function PrintOn(data, root) {
     var film = data.results;
+    var serie = data.results;
     for (var i = 0; i < film.length; i++) {
       if (root == 'search/movie') {
         var searched_movie = film[i];
@@ -73,16 +96,17 @@ $(document).ready(function() {
         var titolo_originale = searched_movie.original_title;
         var lingua = searched_movie.original_language;
         var voto = searched_movie.vote_average;
+        var star_num = standardize(voto);
         var temp = {
-          titolo: titolo,
+          titolo: '<h2>' + titolo + '</h2>',
           titolo_originale: titolo_originale,
-          lingua: lingua,
-          voto: voto
+          lingua: flag_maker(lingua),
+          voto: star_maker(star_num)
 
         }
 
 
-      } else   {
+      }   else    {
         var searched_serie = serie[i];
         var titolo = searched_serie.name;
         var titolo_originale = searched_serie.original_name;
@@ -90,10 +114,10 @@ $(document).ready(function() {
         var voto = searched_serie.vote_average;
 
         var temp = {
-          titolo: titolo,
+          titolo: '<h2>' + titolo + '</h2>',
           titolo_originale: titolo_originale,
-          lingua: lingua,
-          voto: voto
+          lingua:  flag_maker(lingua),
+          voto: standardize(star_num)
 
         }
 
@@ -105,8 +129,33 @@ $(document).ready(function() {
 
   }
 
+  function standardize(votation){
+     var half = votation / 2;
+     var rounded_numb = Math.ceil(half);
+    return rounded_numb;
 
+  }
+  function star_maker( n_star) {
+    var star = '';
+    for (var i = 0; i < 5; i++) {
+      if (i < n_star) {
+          star = star + '<i class="fas fa-star"></i>';
+      } else {
+          star = star + '<i class="far fa-star"></i>'
+      }
+    }
+    return star;
+  }
+  function flag_maker(lingo) {
+    var country = '';
+    if (flagg.includes(lingo)) {
+      country = '<img src="flags/' + lingo +'.png">'
 
+    } else {
+      country = lingo;
+    }
+    return country;
+  }
 });
 
 
