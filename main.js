@@ -7,22 +7,23 @@ $(document).ready(function() {
   var template = Handlebars.compile(source);
   var searchy = $('#sfilter').val();
   var flagg = ['en', 'it', 'de', 'fr', 'ru'];
+  var img_url_base = 'https://image.tmdb.org/t/p/​ ';
+  var img_size = 'w342';
 
   $('.slabel').click(function() {
 
-    // userSearch(),
-    //   serieSearch(url_series);
+
     textControl($('#sfilter').val());
 
   });
   $(document).on('keypress', '.searchbar-input', function() {
     if (event.which == '13') {
-      // userSearch();
-      // serieSearch();
+
       textControl($('#sfilter').val());
     }
   });
-  function textControl(searchy){
+
+  function textControl(searchy) {
     if (searchy.length != 0) {
       $('.movies').remove();
       userSearch(searchy, url_movie);
@@ -30,7 +31,7 @@ $(document).ready(function() {
       $('#sfilter').val('');
 
     } else {
-        alert('I got anything to search!!!');
+      alert('I got anything to search!!!');
     }
 
   }
@@ -38,48 +39,32 @@ $(document).ready(function() {
   function userSearch(searchy, root) {
 
     $.ajax({
-                url: api_url_base + '/search/movie',
-                'data': {
-                    'api_key': api_key,
-                    'query': searchy,
-                    'language': 'it-IT'
-                },
-                method: 'GET',
-                success: function(data) {
+      url: api_url_base + '/' + root,
+      'data': {
+        'api_key': api_key,
+        'query': searchy,
+        'language': 'it-IT'
+      },
+      method: 'GET',
+      success: function(data) {
 
-                    if(data.total_results > 0) {
-                      var film = data.results;
-                        PrintOn(data, root);
-                    } else {
-                        alert('No query found');
-                    }
-                },
-                error: function() {
-                    alert('Error')
-                }
-            });
+        if (data.total_results > 0) {
+          var film = data.results;
+          var serie = data.results
+          PrintOn(data, root);
+        } else {
+          $('#movi').append('No file for this query');
 
-            $.ajax({
-                        url: api_url_base + '/search/tv',
-                        'data': {
-                            'api_key': api_key,
-                            'query': searchy,
-                            'language': 'it-IT'
-                        },
-                        method: 'GET',
-                        success: function(data) {
 
-                            if(data.total_results > 0) {
-                              var serie = data.results;
-                                PrintOn(data, root);
-                            } else {
-                                alert('No query found');
-                            }
-                        },
-                        error: function() {
-                            alert('Error')
-                        }
-                    });
+        }
+      },
+      error: function() {
+        alert('Error')
+      }
+    });
+
+
+
 
   }
 
@@ -92,32 +77,56 @@ $(document).ready(function() {
     for (var i = 0; i < film.length; i++) {
       if (root == 'search/movie') {
         var searched_movie = film[i];
-        var titolo = searched_movie.title;
-        var titolo_originale = searched_movie.original_title;
+        // var titolo = searched_movie.title;
+        if (searched_movie.hasOwnProperty('title')) {
+          var titolo = searched_movie.title;
+          var tipo = 'Movie';
+
+        } else  if (root == 'search/tv'){
+          var titolo = searched_movie.name;
+          var tipo = 'TV series';
+
+        }
+        if (searched_movie.hasOwnProperty('original_title')) {
+          var titolo_originale = searched_movie.original_title;
+
+        } else {
+          var titolo_originale = searched_movie.original_name;
+        }
+        // var titolo_originale = searched_movie.original_title;
         var lingua = searched_movie.original_language;
         var voto = searched_movie.vote_average;
         var star_num = standardize(voto);
+        var posterimg = img_url_base + img_size + searched_movie.poster_path;
+        console.log(posterimg);
         var temp = {
           titolo: '<h2>' + titolo + '</h2>',
           titolo_originale: titolo_originale,
           lingua: flag_maker(lingua),
-          voto: star_maker(star_num)
+          voto: star_maker(star_num),
+          type: '<h3>' + tipo + '</h3>',
+          image: posterimg
 
         }
 
 
-      }   else    {
+      } else {
         var searched_serie = serie[i];
         var titolo = searched_serie.name;
         var titolo_originale = searched_serie.original_name;
         var lingua = searched_serie.original_language;
         var voto = searched_serie.vote_average;
+        var star_num = standardize(voto);
+        var posterimg = img_url_base + img_size + searched_serie.poster_path;
+        console.log(posterimg);
 
         var temp = {
           titolo: '<h2>' + titolo + '</h2>',
           titolo_originale: titolo_originale,
-          lingua:  flag_maker(lingua),
-          voto: standardize(star_num)
+          lingua: flag_maker(lingua),
+          voto: star_maker(star_num),
+          type: '<h3>' + tipo + '</h3>',
+          image: posterimg
 
         }
 
@@ -129,27 +138,29 @@ $(document).ready(function() {
 
   }
 
-  function standardize(votation){
-     var half = votation / 2;
-     var rounded_numb = Math.ceil(half);
+  function standardize(votation) {
+    var half = votation / 2;
+    var rounded_numb = Math.ceil(half);
     return rounded_numb;
 
   }
-  function star_maker( n_star) {
+
+  function star_maker(n_star) {
     var star = '';
     for (var i = 0; i < 5; i++) {
       if (i < n_star) {
-          star = star + '<i class="fas fa-star"></i>';
+        star = star + '<i class="fas fa-star"></i>';
       } else {
-          star = star + '<i class="far fa-star"></i>'
+        star = star + '<i class="far fa-star"></i>'
       }
     }
     return star;
   }
+
   function flag_maker(lingo) {
     var country = '';
     if (flagg.includes(lingo)) {
-      country = '<img src="flags/' + lingo +'.png">'
+      country = '<img src="flags/' + lingo + '.png">'
 
     } else {
       country = lingo;
@@ -157,49 +168,24 @@ $(document).ready(function() {
     return country;
   }
 });
-
-
-
-
-
-
-// {
-//  $.ajax({
-//    'url': api_url_base + tipo_chiamata,
-//    'data': {
-//      'api_key': '1c2382ce77d5c3384075b987fc84ac1a',
-//      'query': searchy
-//    },
-//    'method': 'GET',
-//    'success': function(data) {
-//      var serie = data.results;
-//      for (var i = 0; i < serie.length; i++) {
-//        var searched_serie = serie[i];
-//        var titolo = searched_serie.name;
-//        var titolo_originale = searched_serie.original_name;
-//        var lingua = searched_serie.original_language;
-//        var voto = searched_serie.vote_average;
+// $.ajax({
+//     url: api_url_base + '/search/tv',
+//     'data': {
+//       'api_key': api_key,
+//       'query': searchy,
+//       'language': 'it-IT'
+//     },
+//     method: 'GET',
+//     success: function(data) {
 //
-//        var temp = {
-//          titolo: titolo,
-//          titolo_originale: titolo_originale,
-//          lingua: lingua,
-//          voto: voto
+//       if (data.total_results > 0) {
+//         var serie = data.results;
+//         PrintOn(data, root);
+//       } else {
 //
-//        };
-//        console.log(source);
-//        var html = template(temp);
-//        $('#movi').append(html);
-//
-//      }
-//
-//
-//
-//    },
-//    'error': function() {
-//      alert('errore');
-//
-//    }
-//  });
-// }
-// $('#sfilter').val('');
+//       }
+//     },
+//     error: function() {
+//       alert('Error')
+//     }
+//   });

@@ -28,11 +28,14 @@
   </main>
   <script id="movies-template" type="text/x-handlebars-template">
     <div class="movies">
+      <img class="poster" src="{{image}}">
       <ul>
         <li>{{{titolo}}}</li>
         <li>orig.title:{{titolo_originale}}</li>
+        <li>{{{type}}}</li>
         <li>orig.lang:{{{lingua}}}</li>
         <li>rated:{{{voto}}}</li>
+
       </ul>
     </div>
   </script>
