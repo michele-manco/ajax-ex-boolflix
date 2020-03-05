@@ -34,7 +34,7 @@ main {
   margin-top: 40px;
 }
 .movies {
-  height: 300px;
+  height:450px;
   width: 200px;;
   background-color: #dee5ed;
   margin-bottom: 40px;
@@ -47,13 +47,15 @@ main {
 }
 .movies li{
   font-size: 12px;
-  padding: 6px;
+  padding: 4px;
   color:#1d2d3b;
 }
 .movies li img{
   width: 20px;
   display: block;
+
 }
 .movies img{
-  max-width: 50%;
+  max-width: 100%;
+  object-fit: cover;
 }
