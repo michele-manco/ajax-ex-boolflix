@@ -7,7 +7,7 @@ $(document).ready(function() {
   var template = Handlebars.compile(source);
   var searchy = $('#sfilter').val();
   var flagg = ['en', 'it', 'de', 'fr', 'ru'];
-  var img_url_base = 'https://image.tmdb.org/t/p/​ ';
+  var img_url_base = 'https://image.tmdb.org/t/p/';
   var img_size = 'w342';
 
   $('.slabel').click(function() {
@@ -73,24 +73,27 @@ $(document).ready(function() {
 
   function PrintOn(data, root) {
     var film = data.results;
-    var serie = data.results;
+    console.log(film);
+    // var serie = data.results;
     for (var i = 0; i < film.length; i++) {
+      var searched_movie = film[i];
       if (root == 'search/movie') {
-        var searched_movie = film[i];
-        // var titolo = searched_movie.title;
-        if (searched_movie.hasOwnProperty('title')) {
-          var titolo = searched_movie.title;
+        // var searched_movie = film[i];
+        var titolo = searched_movie.title;
+        var titolo_originale = searched_movie.original_title;
+
+        // if (searched_movie.hasOwnProperty('title')) {
+        //   var titolo = searched_movie.title;
           var tipo = 'Movie';
 
         } else  if (root == 'search/tv'){
           var titolo = searched_movie.name;
           var tipo = 'TV series';
 
-        }
-        if (searched_movie.hasOwnProperty('original_title')) {
-          var titolo_originale = searched_movie.original_title;
+        // }
+        // if (searched_movie.hasOwnProperty('original_title')) {
 
-        } else {
+        // } else {
           var titolo_originale = searched_movie.original_name;
         }
         // var titolo_originale = searched_movie.original_title;
@@ -110,27 +113,27 @@ $(document).ready(function() {
         }
 
 
-      } else {
-        var searched_serie = serie[i];
-        var titolo = searched_serie.name;
-        var titolo_originale = searched_serie.original_name;
-        var lingua = searched_serie.original_language;
-        var voto = searched_serie.vote_average;
-        var star_num = standardize(voto);
-        var posterimg = img_url_base + img_size + searched_serie.poster_path;
-        console.log(posterimg);
+      // } else {
+      //   var searched_serie = serie[i];
+      //   var titolo = searched_serie.name;
+      //   var titolo_originale = searched_serie.original_name;
+      //   var lingua = searched_serie.original_language;
+      //   var voto = searched_serie.vote_average;
+      //   var star_num = standardize(voto);
+      //   var posterimg = img_url_base + img_size + searched_serie.poster_path;
+      //   console.log(posterimg);
+      //
+      //   var temp = {
+      //     titolo: '<h2>' + titolo + '</h2>',
+      //     titolo_originale: titolo_originale,
+      //     lingua: flag_maker(lingua),
+      //     voto: star_maker(star_num),
+      //     type: '<h3>' + tipo + '</h3>',
+      //     image: posterimg
 
-        var temp = {
-          titolo: '<h2>' + titolo + '</h2>',
-          titolo_originale: titolo_originale,
-          lingua: flag_maker(lingua),
-          voto: star_maker(star_num),
-          type: '<h3>' + tipo + '</h3>',
-          image: posterimg
+        // }
 
-        }
-
-      }
+      // }
       var html = template(temp);
       $('#movi').append(html);
     }
