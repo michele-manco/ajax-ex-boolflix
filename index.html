@@ -13,11 +13,36 @@
 </head>
 <body>
   <header>
+    <div class="box_1">
+      <h1 id="logo">Bool-Flix</h1>
+      <ul class="voices">
+        <li class="gen">
+          <a href="#">Home</a>
+        </li>
+        <li class="gen">
+          <a href="#">Film</a>
+        </li>
+        <li class="gen">
+          <a href="#">Serie-Tv</a>
+        </li>
+        <li class="gen">
+          <a href="#">Nuovi Arrivi</a>
+        </li>
+        <li class="gen">
+          <a href="#">La mia lista</a>
+        </li>
+      </ul>
+    </div>
+
     <div class="searchbar">
-      <input id="sfilter" class="searchbar-input" placeholder="Type the name of a movie " name="search">
-      <button class="slabel" for="search">
-        <i class="fa fa-search" aria-hidden="true"></i>
-      </button>
+      <i class="fa fa-search lens" aria-hidden="true" ></i>
+
+      <input id="sfilter" class="searchbar-input" type="text" placeholder="Type the name of a movie" name="search">
+      <label class="slabel" for="search">
+      </label>
+      <i class="fas fa-gift gift"></i>
+      <i class="far fa-bell bell"></i>
+      <img class="face" src="images/user4.png" alt="">
 
     </div>
   </header>
@@ -27,18 +52,34 @@
     </div>
   </main>
   <script id="movies-template" type="text/x-handlebars-template">
-    <div class="movies">
+    <!-- <div class="movies">
       <img class="poster" src="{{image}}">
       <ul>
         <li>{{{titolo}}}</li>
-        <li>orig.title:{{titolo_originale}}</li>
-        <li>{{{type}}}</li>
-        <li>orig.lang:{{{lingua}}}</li>
-        <li>rated:{{{voto}}}</li>
+        <li>Titolo originale:{{titolo_originale}}</li>
+        <li>Tipologia:{{{type}}}</li>
+        <li>Lingua originale:{{{lingua}}}</li>
+        <li>Voto:{{{voto}}}</li>
 
       </ul>
+    </div> -->
+
+    <div class="movies">
+      <div class="movies-inner">
+        <div class="movies-front">
+          <img class="poster" src="{{image}}">
+        </div>
+        <div class="movies-back">
+          <ul>
+            <li>{{{titolo}}}</li>
+            <li>Titolo originale:{{titolo_originale}}</li>
+            <li>Tipologia:{{{type}}}</li>
+            <li>Lingua originale:{{{lingua}}}</li>
+            <li>Voto:{{{voto}}}</li>
+          </ul>
+        </div>
+      </div>
     </div>
   </script>
-
-</body>
+  </body>
 </html>

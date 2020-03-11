@@ -10,16 +10,19 @@ $(document).ready(function() {
   var img_url_base = 'https://image.tmdb.org/t/p/';
   var img_size = 'w342';
 
+  $(".lens").click(function(){
+  textControl($('#sfilter').val());
+});
+
+
+
   $('.slabel').click(function() {
-
-
     textControl($('#sfilter').val());
+});
 
-  });
   $(document).on('keypress', '.searchbar-input', function() {
     if (event.which == '13') {
-
-      textControl($('#sfilter').val());
+    textControl($('#sfilter').val());
     }
   });
 
@@ -72,68 +75,38 @@ $(document).ready(function() {
 
 
   function PrintOn(data, root) {
-    var film = data.results;
-    console.log(film);
-    // var serie = data.results;
-    for (var i = 0; i < film.length; i++) {
-      var searched_movie = film[i];
-      if (root == 'search/movie') {
-        // var searched_movie = film[i];
-        var titolo = searched_movie.title;
-        var titolo_originale = searched_movie.original_title;
+        var film = data.results;
+          console.log(film);
 
-        // if (searched_movie.hasOwnProperty('title')) {
-        //   var titolo = searched_movie.title;
-          var tipo = 'Movie';
+          for (var i = 0; i < film.length; i++) {
+            var searched_movie = film[i];
+          if (root == 'search/movie') {
+            var titolo = searched_movie.title;
+            var titolo_originale = searched_movie.original_title;
+            var tipo = 'Movie';
+          } else  if (root == 'search/tv'){
+            var titolo = searched_movie.name;
+            var titolo_originale = searched_movie.original_name;
+            var tipo = 'TV series';
+          }
+            var lingua = searched_movie.original_language;
+            var voto = searched_movie.vote_average;
+            var star_num = standardize(voto);
+        // var posterimg = poster_maker(posterimg);
+            var posterimg = img_url_base + img_size + searched_movie.poster_path;
 
-        } else  if (root == 'search/tv'){
-          var titolo = searched_movie.name;
-          var tipo = 'TV series';
-
-        // }
-        // if (searched_movie.hasOwnProperty('original_title')) {
-
-        // } else {
-          var titolo_originale = searched_movie.original_name;
-        }
-        // var titolo_originale = searched_movie.original_title;
-        var lingua = searched_movie.original_language;
-        var voto = searched_movie.vote_average;
-        var star_num = standardize(voto);
-        var posterimg = img_url_base + img_size + searched_movie.poster_path;
-        console.log(posterimg);
-        var temp = {
-          titolo: '<h2>' + titolo + '</h2>',
-          titolo_originale: titolo_originale,
-          lingua: flag_maker(lingua),
-          voto: star_maker(star_num),
-          type: '<h3>' + tipo + '</h3>',
-          image: posterimg
-
-        }
+            console.log(posterimg);
+          var temp = {
+            titolo: '<h2>' + titolo + '</h2>',
+            titolo_originale: titolo_originale,
+            lingua: flag_maker(lingua),
+            voto: star_maker(star_num),
+            type: '<h3>' + tipo + '</h3>',
+            image: posterimg
+          }
 
 
-      // } else {
-      //   var searched_serie = serie[i];
-      //   var titolo = searched_serie.name;
-      //   var titolo_originale = searched_serie.original_name;
-      //   var lingua = searched_serie.original_language;
-      //   var voto = searched_serie.vote_average;
-      //   var star_num = standardize(voto);
-      //   var posterimg = img_url_base + img_size + searched_serie.poster_path;
-      //   console.log(posterimg);
-      //
-      //   var temp = {
-      //     titolo: '<h2>' + titolo + '</h2>',
-      //     titolo_originale: titolo_originale,
-      //     lingua: flag_maker(lingua),
-      //     voto: star_maker(star_num),
-      //     type: '<h3>' + tipo + '</h3>',
-      //     image: posterimg
 
-        // }
-
-      // }
       var html = template(temp);
       $('#movi').append(html);
     }
@@ -154,7 +127,7 @@ $(document).ready(function() {
       if (i < n_star) {
         star = star + '<i class="fas fa-star"></i>';
       } else {
-        star = star + '<i class="far fa-star"></i>'
+        star = star + '<i class="far fa-star"></i>';
       }
     }
     return star;
@@ -163,32 +136,29 @@ $(document).ready(function() {
   function flag_maker(lingo) {
     var country = '';
     if (flagg.includes(lingo)) {
-      country = '<img src="flags/' + lingo + '.png">'
+      country = '<img src="flags/' + lingo + '.png">';
 
     } else {
       country = lingo;
     }
     return country;
   }
+
+  // function poster_maker(posterimg){
+  //   var posterimg = '';
+  //   if (posterimg != null) {
+  //     posterimg = img_url_base + img_size + searched_movie.poster_path;
+  //
+  //
+  //   } else {
+  //     posterimg = 'images/poster-not.jpg';
+  //   }
+  //   return posterimg;
+  // }
+  // $('.searchbar-input').focus(function(){
+  //     $('.searchbar i').toggleClass('fa fa-search   fas fa-paper-plane');
+  // });
+  // $('.searchbar-input').blur(function(){
+  //     $('.searchbar i i').toggleClass('fa fa-search   fas fa-paper-plane');
+  // });
 });
-// $.ajax({
-//     url: api_url_base + '/search/tv',
-//     'data': {
-//       'api_key': api_key,
-//       'query': searchy,
-//       'language': 'it-IT'
-//     },
-//     method: 'GET',
-//     success: function(data) {
-//
-//       if (data.total_results > 0) {
-//         var serie = data.results;
-//         PrintOn(data, root);
-//       } else {
-//
-//       }
-//     },
-//     error: function() {
-//       alert('Error')
-//     }
-//   });
